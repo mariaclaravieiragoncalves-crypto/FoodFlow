@@ -11,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import pt.clara.foodflow.model.DummyData
 import pt.clara.foodflow.model.Restaurante
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,7 +22,7 @@ import pt.clara.foodflow.model.Restaurante
 fun RestaurantCard(
     restaurante: Restaurante,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {} // Permite passar uma ação de clique para navegação
+    onClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier
@@ -39,14 +41,13 @@ fun RestaurantCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(160.dp),
-                contentScale = ContentScale.Crop // Corta a imagem para preencher o espaço mantendo a proporção
+                contentScale = ContentScale.Crop
             )
 
-            // 2. Detalhes em Texto (Nome, Avaliação, Tempo, Taxa)
+            // 2. Detalhes em Texto
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                // Linha superior: Nome e Avaliação
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -56,19 +57,18 @@ fun RestaurantCard(
                         text = restaurante.nome,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.weight(1f) // Evita que nomes grandes empurrem a avaliação para fora
+                        modifier = Modifier.weight(1f)
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    // Avaliação com ícone de estrela
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Star,
                             contentDescription = "Avaliação",
-                            tint = Color(0xFFFFC107), // Cor amarela/dourada
+                            tint = Color(0xFFFFC107),
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
@@ -82,7 +82,6 @@ fun RestaurantCard(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Linha inferior: Tempo de entrega e Taxa
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Start,
@@ -94,19 +93,17 @@ fun RestaurantCard(
                         color = Color.Gray
                     )
 
-                    // Ponto separador
                     Text(
                         text = " • ",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray
                     )
 
-                    // Lógica para mostrar "Grátis" a verde ou o preço da taxa
                     if (restaurante.taxaEntrega == 0.0) {
                         Text(
                             text = "Entrega Grátis",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Color(0xFF4CAF50), // Verde
+                            color = Color(0xFF4CAF50),
                             fontWeight = FontWeight.Medium
                         )
                     } else {
@@ -120,4 +117,20 @@ fun RestaurantCard(
             }
         }
     }
+}
+
+@Preview(
+    name = "Cartão de Restaurante",
+    showBackground = true,
+    backgroundColor = 0xFFFFFFFF
+)
+@Composable
+fun RestaurantCardPreview() {
+    val restauranteTeste = DummyData.restaurantes[0]
+
+    RestaurantCard(
+        restaurante = restauranteTeste,
+        modifier = Modifier.padding(16.dp),
+        onClick = {}
+    )
 }
